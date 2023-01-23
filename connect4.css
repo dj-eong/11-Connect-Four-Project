@@ -1,13 +1,13 @@
 /* game board table */
 
 #board td {
-  width: 125px;
-  height: 125px;
+  width: 13vh;
+  height: 13vh;
   border: solid 1px #666;
 }
 
 #board {
-  position: absolute;
+  position: relative;
   left: 50%;
   transform: translate(-50%);
 }
