@@ -11,12 +11,8 @@ const HEIGHT = 6;
 let currPlayer = 1; // active player: 1 or 2
 const board = []; // array of rows, each row is array of cells  (board[y][x])
 
-/** makeBoard: create in-JS board structure:
- *    board = array of rows, each row is array of cells  (board[y][x])
- */
-
+// create in-JS board structure, an empty 2D array
 function makeBoard() {
-  // TODO: set "board" to empty HEIGHT x WIDTH matrix array
   board.length = HEIGHT;
   for (let y = 0; y < board.length; y++) {
     board[y] = [];
@@ -24,13 +20,10 @@ function makeBoard() {
   }
 }
 
-/** makeHtmlBoard: make HTML table and row of column tops. */
-
+// make HTML table and row of column tops
 function makeHtmlBoard() {
-  // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
   const htmlBoard = document.querySelector('#board');
 
-  // TODO: add comment for this code
   // create top row of board for players to click to put their piece into
   // create visible square cells within the top row with unique id to differentiate when player clicks on specific cell
   const top = document.createElement("tr");
@@ -44,7 +37,6 @@ function makeHtmlBoard() {
   }
   htmlBoard.append(top);
 
-  // TODO: add comment for this code
   // create rows for the rest of the board and add visible square cells with unique id to each row
   for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
@@ -57,20 +49,16 @@ function makeHtmlBoard() {
   }
 }
 
-/** findSpotForCol: given column x, return top empty y (null if filled) */
-
+// given column x, return top empty spot y (null if filled)
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
   for (let y = HEIGHT - 1; y >= 0; y--) {
     if (!board[y][x]) return y;
   }
   return null;
 }
 
-/** placeInTable: update DOM to place piece into HTML table of board */
-
+// update DOM to place piece into HTML table of board
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
   const piece = document.createElement('div');
   piece.classList.add('piece');
   currPlayer === 1 ? piece.classList.add('red') : piece.classList.add('blue');
@@ -78,20 +66,17 @@ function placeInTable(y, x) {
   cell.append(piece);
 }
 
-/** endGame: announce game end */
-
+// announce game end, and make board uninteractible
 function endGame(msg) {
-  // TODO: pop up alert message
   alert(msg);
   const top = document.querySelector('#column-top');
   top.removeEventListener('click', handleClick);
 }
 
-/** handleClick: handle click of column top to play piece */
-
+// handle click of column top to play piece
 function handleClick(evt) {
   // get x from ID of clicked cell
-  const x = +evt.target.id;
+  const x = evt.target.id;
 
   // get next spot in column (if none, ignore click)
   const y = findSpotForCol(x);
@@ -100,7 +85,6 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
   placeInTable(y, x);
   board[y][x] = currPlayer;
 
@@ -110,16 +94,15 @@ function handleClick(evt) {
   }
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
   if (checkForTie()) {
     return endGame('You tied!');
   }
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
   currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
 }
 
+// check if every cell in board is filled
 function checkForTie() {
   return board.every(function (row) {
     for (let x = 0; x < WIDTH; x++) {
@@ -129,14 +112,13 @@ function checkForTie() {
   });
 }
 
-/** checkForWin: check board cell-by-cell for "does a win start here?" */
-
+// check board cell-by-cell for "does a win start here?"
 function checkForWin() {
-  function _win(cells) {
-    // Check four cells to see if they're all color of current player
-    //  - cells: list of four (y, x) cells
-    //  - returns true if all are legal coordinates & all match currPlayer
 
+  // check four cells to see if they're all color of current player
+  //  - cells: array of four (y, x) cells
+  //  - returns true if all are legal coordinates & all match currPlayer
+  function _win(cells) {
     return cells.every(
       ([y, x]) =>
         y >= 0 &&
@@ -147,8 +129,8 @@ function checkForWin() {
     );
   }
 
-  // TODO: read and understand this code. Add comments to help you.
-
+  // loop through 2D array board, check each cell
+  // create 4 lists of possible connect 4 combinations starting from said cell (horizontal, vertical, and both diagonals)
   for (let y = 0; y < HEIGHT; y++) {
     for (let x = 0; x < WIDTH; x++) {
       const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
