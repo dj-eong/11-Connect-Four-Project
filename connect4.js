@@ -102,14 +102,12 @@ function handleClick(evt) {
   currPlayer === 1 ? currPlayer = 2 : currPlayer = 1;
 }
 
-// check if every cell in board is filled
+// check if top row in board is filled
 function checkForTie() {
-  return board.every(function (row) {
-    for (let x = 0; x < WIDTH; x++) {
-      if (!row[x]) return false;
-    }
-    return true;
-  });
+  for (let x = 0; x < board[0].length; x++) {
+    if (!board[0][x]) return false;
+  }
+  return true;
 }
 
 // check board cell-by-cell for "does a win start here?"
